@@ -5,13 +5,13 @@ const { body, validationResult } = require("express-validator");
 const Book = require("../models/Book");
 
 // Get all the keys , login not required
-router.get("/fetchallkeys", fetchuser, async (req, res) => {
+router.get("/fetchallbooks", fetchuser, async (req, res) => {
   const books = await Book.find();
   res.json(books);
   
 });
 // Get all the keys , login  required
-router.get("/fetchalluserkeys", fetchuser, async (req, res) => {
+router.get("/fetchalluserbooks", fetchuser, async (req, res) => {
   const books = await Book.find({ user: req.user.id });
   res.json(books);
   
@@ -48,7 +48,7 @@ router.post(
   }
 );
 // toggle availability of book 
-router.put('/books/:id/toggleAvailability',fetchuser, async (req, res) => {
+router.put('/:id/toggleAvailability',fetchuser, async (req, res) => {
   try {
     const bookId = req.params.id;
     const book = await Book.findById(bookId);
@@ -69,7 +69,7 @@ router.put('/books/:id/toggleAvailability',fetchuser, async (req, res) => {
 
 
 // Delete a book
-router.delete('/books/:id',fetchuser, async (req, res) => {
+router.delete('/delete/:id',fetchuser, async (req, res) => {
   try {
     const bookId = req.params.id;
     const book = await Book.findById(bookId);

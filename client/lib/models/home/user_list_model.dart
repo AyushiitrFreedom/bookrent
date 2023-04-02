@@ -1,40 +1,32 @@
-class Task {
-  String? sId;
-  String? user;
+class Book {
+  String id;
+  String user;
+  String key;
+  double price;
   String? title;
-  int? totalCount;
-  int? completedCount;
-  int? animationType;
-  int? iV;
+  String? coverUrl;
 
-  Task(
-      {this.sId,
-      this.user,
-      this.title,
-      this.totalCount,
-      this.completedCount,
-      this.animationType,
-      this.iV});
+  Book({required this.id, required this.user, required this.key, required this.price, this.title, this.coverUrl});
 
-  Task.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    user = json['user'];
-    title = json['title'];
-    totalCount = json['totalCount'];
-    completedCount = json['completedCount'];
-    animationType = json['animationType'];
-    iV = json['__v'];
+  factory Book.fromJson(Map<String, dynamic> json) {
+    return Book(
+      id: json['_id'],
+      user: json['user'],
+      key: json['key'],
+      price: json['price'],
+      title: json['title'],
+      coverUrl: json['coverUrl'],
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
+    data['_id'] = this.id;
     data['user'] = this.user;
+    data['key'] = this.key;
+    data['price'] = this.price;
     data['title'] = this.title;
-    data['totalCount'] = this.totalCount;
-    data['completedCount'] = this.completedCount;
-    data['animationType'] = this.animationType;
-    data['__v'] = this.iV;
+    data['coverUrl'] = this.coverUrl;
     return data;
   }
 }

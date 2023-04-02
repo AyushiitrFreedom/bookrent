@@ -7,7 +7,7 @@ import 'package:getx_mvvm/repository/home_repository/home_repository.dart';
 
 
 
-class HomeController extends GetxController {
+class SearchController extends GetxController {
   final _api = HomeRepository();
 
 

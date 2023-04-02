@@ -11,7 +11,7 @@ import 'package:getx_mvvm/view_models/controller/user_preference/user_prefrence_
 
 import '../../res/components/internet_exceptions_widget.dart';
 import '../../view_models/controller/home/home_view_models.dart';
-import '../../view_models/controller/update/update_completed_count_view_model.dart';
+
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -23,7 +23,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final homeController = Get.put(HomeController());
 
-  final updatevm = Get.put(UpdateCompleteCountController());
 
   UserPreference userPreference = UserPreference();
 
@@ -46,12 +45,12 @@ class _HomeViewState extends State<HomeView> {
             if (homeController.error.value == 'No internet') {
               return InterNetExceptionWidget(
                 onPress: () {
-                  homeController.refreshApi();
+                  homeController.userListApi();
                 },
               );
             } else {
               return GeneralExceptionWidget(onPress: () {
-                homeController.refreshApi();
+                homeController.userListApi();
               });
             }
           case Status.COMPLETED:
