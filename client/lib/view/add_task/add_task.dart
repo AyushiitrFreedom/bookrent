@@ -6,6 +6,7 @@ import 'package:getx_mvvm/view/add_task/widgets/input_total_count_widget.dart';
 import 'package:getx_mvvm/view/add_task/widgets/sumbit_button_widget.dart';
 
 import 'package:getx_mvvm/view_models/controller/add_task/add_task.dart';
+import 'package:getx_mvvm/view_models/suggestions/suggestions_view_model.dart';
 
 
 class AddTaskView extends StatefulWidget {
@@ -17,6 +18,7 @@ class AddTaskView extends StatefulWidget {
 
 class _AddTaskViewState extends State<AddTaskView> {
   final addtaskVM = Get.put(AddTaskController());
+  final suggestionVM = Get.put(SuggestionController());
   final _formkey = GlobalKey<FormState>();
   
 
@@ -44,7 +46,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                 child: Column(
                   children: [
                     InputTitleWidget(
-                      authVM: addtaskVM,
+                      authVM: suggestionVM,
                     ),
                   
                     const SizedBox(

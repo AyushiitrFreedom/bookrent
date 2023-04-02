@@ -13,6 +13,10 @@ class InputTitleWidget extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return  TextFormField(
+       
+      onChanged: (value) {
+        authVM.suggestionListApi(value);
+              },
       controller: authVM.titleController.value,
       focusNode: authVM.titleFocusNode.value,
 
@@ -33,7 +37,8 @@ class InputTitleWidget extends StatelessWidget {
             ),
             fillColor: Colors.grey.shade200,
             filled: true,
-            hintText:"title",
+            hintText: 'Enter book name',
+                suffixIcon: Icon(Icons.search),
             hintStyle: TextStyle(color: Colors.grey[500])),
     );
   }
