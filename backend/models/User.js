@@ -16,15 +16,11 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  image:{
-    type :String,
-    required : true,
-    unique : true
+  phoneNumber:{
+    type: String,
+    required:true,
+    unique:true,
   },
-  completedTasks:{
-    type: Number,
-    default : 0,
-  }
 });
 
 const User = mongoose.model('user',UserSchema);

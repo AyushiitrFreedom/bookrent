@@ -6,26 +6,25 @@ const Book = require("../models/Book");
 
 // Get all the keys , login not required
 router.get("/fetchallkeys", fetchuser, async (req, res) => {
-  const tasks = await Book.find();
-  res.json(tasks);
+  const books = await Book.find();
+  res.json(books);
   
 });
 // Get all the keys , login  required
 router.get("/fetchalluserkeys", fetchuser, async (req, res) => {
-  const tasks = await Book.find({ user: req.user.id });
-  res.json(tasks);
+  const books = await Book.find({ user: req.user.id });
+  res.json(books);
   
 });
 
-// adding tasks login required
+// adding books login required
 router.post(
   "/addbook",
   fetchuser,
-  [body("title", "Enter a valid title").isLength({ min: 3 })],
   async (req, res) => {
-    console.log("hello buddy")
+    
     try {
-      const { title, totalCount,  animationType } = req.body;
+      const { key, price} = req.body;
 
       // If there are errors, return Bad request and the errors
       const errors = validationResult(req);
@@ -34,46 +33,58 @@ router.post(
           .status(400)
           .json({ success: false, error: errors.array()[0]["msg"] });
       }
-      const task = new Book({
-        title,
-        totalCount,
-        animationType,
+      const book = new Book({
+        key,
+        price,
         user: req.user.id,
       });
-      const savedTask = await task.save();
+      const savedbook = await book.save();
 
-      res.json(savedTask);
+      res.json(savedbook);
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
     }
   }
 );
-//update task
-router.put("/updatetask/:id", fetchuser, async (req, res) => {
-  // create new object
-  
+// toggle availability of book 
+router.put('/books/:id/toggleAvailability',fetchuser, async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const book = await Book.findById(bookId);
 
-  // find the note to be updated and update it
-  let task = await Book.findById(req.params.id);
-  
-  task['completedCount']+=1;
-  const newTask = task;
+    if (!book) {
+      return res.status(404).send({ error: 'Book not found' });
+    }
 
-  if (!task) {
-    return req.status(404).send("not found");
+    book.availability = !book.availability;
+    await book.save();
+
+    res.send({ message: 'Book availability toggled successfully', book });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Server error' });
   }
+});
 
-  if (task.user.toString() !== req.user.id) {
-    return res.status(401).send("Not Allowed");
+
+// Delete a book
+router.delete('/books/:id',fetchuser, async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const book = await Book.findById(bookId);
+
+    if (!book) {
+      return res.status(404).send({ error: 'Book not found' });
+    }
+
+    await book.delete();
+
+    res.send({ message: 'Book deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Server error' });
   }
-
-  task = await Book.findByIdAndUpdate(
-    req.params.id,
-    { $set: newTask },
-    { new: true }
-  );
-  res.json({ task });
 });
 
 module.exports = router;

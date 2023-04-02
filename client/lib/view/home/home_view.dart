@@ -6,10 +6,10 @@ import 'package:getx_mvvm/res/components/empty_page.dart';
 import 'package:getx_mvvm/res/components/general_exception.dart';
 import 'package:getx_mvvm/res/components/neumorphism.dart';
 import 'package:getx_mvvm/res/routes/routes_name.dart';
+import 'package:getx_mvvm/view/home/widgets/card.dart';
 import 'package:getx_mvvm/view_models/controller/user_preference/user_prefrence_view_model.dart';
 
 import '../../res/components/internet_exceptions_widget.dart';
-import '../../view_models/controller/all_users/all_users.dart';
 import '../../view_models/controller/home/home_view_models.dart';
 import '../../view_models/controller/update/update_completed_count_view_model.dart';
 
@@ -22,7 +22,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final homeController = Get.put(HomeController());
-  final userController = Get.put(AllUsersController());
+
   final updatevm = Get.put(UpdateCompleteCountController());
 
   UserPreference userPreference = UserPreference();
@@ -32,7 +32,6 @@ class _HomeViewState extends State<HomeView> {
     // TODO: implement initState
     super.initState();
     homeController.userListApi();
-    userController.AlluserListApi();
   }
 
   @override
@@ -76,33 +75,10 @@ class _HomeViewState extends State<HomeView> {
                       ? EmptyPage()
                       : Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: ScrollPhysics(),
+                          child: ListView.builder(
                             itemCount: homeController.userList.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 1,
-                              crossAxisSpacing: 30,
-                              mainAxisSpacing: 30,
-                            ),
                             itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(RouteName.taskanimation,
-                                      arguments: [index]);
-                                },
-                                child: NeuMorphism(
-                                  height: 100,
-                                  width: 100,
-                                  child: Center(
-                                    child: Text(homeController
-                                        .userList[index].title
-                                        .toString()),
-                                  ),
-                                ),
-                              );
+                              return BookCard(book : homeController.userList[index]);
                             },
                           ),
                         )

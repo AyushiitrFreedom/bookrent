@@ -33,7 +33,7 @@ class _CompletedTaskState extends State<CompletedTask> {
               top: 10,
               left: 10,
               child: IconButton(icon: Icon(Icons.home , color: Colors.white, size: 30,) ,
-              onPressed: () => Get.toNamed(RouteName.btmnavbar),
+              onPressed: () => Get.toNamed(RouteName.homeView),
               
               ),
             ),

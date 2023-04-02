@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_mvvm/view/add_task/widgets/select_animation_type.dart';
 
 import 'package:getx_mvvm/view/add_task/widgets/input_title_widget.dart';
 import 'package:getx_mvvm/view/add_task/widgets/input_total_count_widget.dart';
@@ -59,9 +58,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                 ),
               ),
               SizedBox(height: 50,),
-              SelectAnimation(),
-              SizedBox(height: 50,),
-      
+              
               const SizedBox(
                 height: 40,
               ),

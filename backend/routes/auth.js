@@ -15,6 +15,7 @@ router.post(
     body("email", "email not valid").isEmail(),
     body("password", "password must be upto 5 digits").isLength({ min: 5 }),
     body("name", "name must be more than 3 char long").isLength({ min: 3 }),
+    body("phoneNumber", "phoneNumber must be of 10 digits").isLength({ min: 5 }),
   ],
 
   //   checking for errors
@@ -29,7 +30,11 @@ router.post(
     try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res.status(400).json({ error: "sorry email allready exist" });
+        return res.status(400).json({ error: "sorry account allready exist" });
+      }
+      user = await User.findOne({ phoneNumber: req.body.phoneNumber });
+      if (user) {
+        return res.status(400).json({ error: "sorry account allready exist" });
       }
       //   create user
       const salt = await bcrypt.genSaltSync(10);
@@ -38,7 +43,7 @@ router.post(
         name: req.body.name,
         email: req.body.email,
         password: secPass,
-        image:req.body.image,
+        phoneNumber:req.body.phoneNumber,
       });
 
       const data = {
@@ -64,6 +69,7 @@ router.post(
   [
     body("email", "email not valid").isEmail(),
     body("password", "password must be upto 5 digits").isLength({ min: 5 }),
+  
   ],
 
   //   checking for errors
@@ -120,43 +126,6 @@ router.get("/getuser", fetchuser, async (req, res) => {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
   }
-});
-
-router.get("/getallusers", fetchuser, async (req, res) => {
-  try {
-    const user = await User.find().sort({completedTasks : -1}).select('image name completedTasks');
-    res.send(user);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-router.put("/updateuser/:id", fetchuser, async (req, res) => {
-  // create new object
-  
-
-  // find the note to be updated and update it
-  let user = await User.findById(req.params.id);
-  console.log("update");
-  console.log(user);
-  user['completedTasks']+=1;
-  const newUser = user;
-
-  if (!user) {
-    return req.status(404).send("not found");
-  }
-
-  if (user._id.toString() !== req.user.id) {
-    return res.status(401).send("Not Allowed");
-  }
-
-  user = await User.findByIdAndUpdate(
-    req.params.id,
-    { $set: newUser },
-    { new: true }
-  );
-  res.json({ user });
 });
 
 
